@@ -7,7 +7,11 @@ public class SimpleProcessor implements ItemProcessor<String, String> {
 
 	@Override
 	public String process(String data)  {
-		return data.toUpperCase();
+
+		if(data.contains("demo")){
+			return null;
+		}
+		return data.toUpperCase() + " ||| Number of Chars: " + SimpleCounter.countChars(data);
 	}
 
 }

@@ -16,11 +16,23 @@ public class SimpleReader implements ItemReader<String> {
 
 	@Override
 	public String read() {
+	String[] newMessage = null;
+
 		if (count < messages.length) {
-			String message = messages[count];
-			System.out.println("---> Reading: "+message);
-			count++;
-			return message;
+			//SimpleCounter.countDigits(messages);
+
+//				for(String s : messages) {
+//					if (s.contains("demo")) {
+//						continue;
+//					} else {
+//						newMessage[] = messages[];
+//					}
+//				}
+				String message = messages[count];
+				System.out.println("---> Reading: " + message);
+				count++;
+				return message;
+
 		}
 		System.out.println("-----> Finished all reading!");
 		count = 0;
