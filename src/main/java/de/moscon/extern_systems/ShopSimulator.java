@@ -3,15 +3,14 @@ package de.moscon.extern_systems;
 import de.moscon.etl.beans.Product;
 import de.moscon.etl.beans.Sale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @Component
 public class ShopSimulator {
@@ -19,7 +18,9 @@ public class ShopSimulator {
 	@Autowired
 	ProductSimulator productSimulator;
 
-	static private List<Sale> CACHE;
+	static public List<Sale> CACHE;
+
+
 
 	private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -56,6 +57,13 @@ public class ShopSimulator {
 		}
 		CACHE = sales;
 		return sales;
+	}
+
+	public Map<Long, Sale> getHashSales() {
+		List<Sale> saleList = CACHE;
+		Map<Long, Sale> map =
+				saleList.stream().collect(Collectors.toMap(Sale::getCustomerId, item -> item));
+		return map;
 	}
 
 

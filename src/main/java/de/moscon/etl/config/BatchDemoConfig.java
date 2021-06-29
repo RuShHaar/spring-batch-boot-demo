@@ -24,8 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class BatchDemoConfig {
+
+	public List<Sale> saleList;
 
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
@@ -68,9 +72,10 @@ public class BatchDemoConfig {
 
 
 	private Step customerDataStep() {
+		saleList = salesReader.getSales();
 		return stepBuilderFactory
 				.get("customerDataStep")
-				.<Customer, Customer>chunk(1)
+				.<Customer, Customer>chunk(10)
 				.reader(customerReader)
 				.processor(customerProcessor)
 				.writer(customerWriter)
@@ -88,6 +93,8 @@ public class BatchDemoConfig {
 	}
 
 	private Step shopDataStep() {
+
+
 		return stepBuilderFactory
 				.get("shopDataStep")
 				.<Sale, Sale>chunk(20)
