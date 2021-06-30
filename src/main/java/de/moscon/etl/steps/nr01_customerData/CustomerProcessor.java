@@ -21,8 +21,10 @@ public class CustomerProcessor implements ItemProcessor<Customer, Customer> {
 
 	@Override
 	public Customer process(Customer item) throws Exception {
+		shopSimulator.readProductPos(0);
 		saleList = shopSimulator.CACHE;
 
+		System.out.println(saleList.get(0));
 
 
 		item.setPseudonym("customer_"+item.getFirstname().toLowerCase());

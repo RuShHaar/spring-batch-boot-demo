@@ -37,7 +37,7 @@ public class ShopSimulator {
 	/**
 	     Generates 2.000 sales transactions randomly
 	 */
-	private List<Sale> getSales() {
+	public List<Sale> getSales() {
 		if (CACHE != null) {
 			return CACHE;
 		}
