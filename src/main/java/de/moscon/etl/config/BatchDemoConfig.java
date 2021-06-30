@@ -72,7 +72,6 @@ public class BatchDemoConfig {
 
 
 	private Step customerDataStep() {
-		saleList = salesReader.getSales();
 		return stepBuilderFactory
 				.get("customerDataStep")
 				.<Customer, Customer>chunk(10)
