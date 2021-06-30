@@ -5,8 +5,6 @@ import de.moscon.extern_systems.ShopSimulator;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class SalesReader implements ItemReader<Sale> {
 
@@ -22,9 +20,5 @@ public class SalesReader implements ItemReader<Sale> {
 	@Override
 	public Sale read() {
 		return shopSimulator.readProductPos(nextSalesIndex++);
-	}
-
-	public List<Sale> getSales(){
-		return shopSimulator.getSales();
 	}
 }

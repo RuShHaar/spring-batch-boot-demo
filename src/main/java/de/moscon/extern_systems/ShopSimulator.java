@@ -3,14 +3,12 @@ package de.moscon.extern_systems;
 import de.moscon.etl.beans.Product;
 import de.moscon.etl.beans.Sale;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 @Component
 public class ShopSimulator {
@@ -18,9 +16,9 @@ public class ShopSimulator {
 	@Autowired
 	ProductSimulator productSimulator;
 
-	static public List<Sale> CACHE;
+	static private List<Sale> CACHE;
 
-
+	static private Map<Long,Date> data;
 
 	private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -33,11 +31,36 @@ public class ShopSimulator {
 		return sales.get(index);
 	}
 
+	public void generateMinSaleDates() {
+		List<Sale> sales = getSales();
+		Sale testSale;
+		Date testDate;
+		Long testKey;
+		Map<Long,Date> map = new HashMap<>();
+		for (int i = 0; i < 2000; i++) {
+			testSale= sales.get(i);
+			testKey=testSale.getCustomerId();
+			if(!map.containsKey(testKey)){
+				map.put(testKey, testSale.getTime());
+			} else {
+				testDate = map.get(testKey);
+				if(testSale.getTime().before(testDate)){
+					map.put(testKey,testSale.getTime());
+				}
+			}
+		}
+		this.data=map;
+	}
+
+	public Date getMinSaleDate(Long customerKey){
+		return this.data.get(customerKey);
+	}
+
 
 	/**
-	     Generates 2.000 sales transactions randomly
+	 Generates 2.000 sales transactions randomly
 	 */
-	public List<Sale> getSales() {
+	private List<Sale> getSales() {
 		if (CACHE != null) {
 			return CACHE;
 		}
@@ -57,13 +80,6 @@ public class ShopSimulator {
 		}
 		CACHE = sales;
 		return sales;
-	}
-
-	public Map<Long, Sale> getHashSales() {
-		List<Sale> saleList = CACHE;
-		Map<Long, Sale> map =
-				saleList.stream().collect(Collectors.toMap(Sale::getCustomerId, item -> item));
-		return map;
 	}
 
 
