@@ -18,6 +18,8 @@ import java.util.Map;
 @Component
 public class CustomerProcessor implements ItemProcessor<Customer, Customer> {
 
+	int nextSalesIndex = 0;
+
 	@Autowired
 	private ShopSimulator shopSimulator;
 
@@ -26,7 +28,8 @@ public class CustomerProcessor implements ItemProcessor<Customer, Customer> {
 
 	@Override
 	public Customer process(Customer item) throws Exception {
-		shopSimulator.readProductPos(0);
+
+		shopSimulator.readProductPos(nextSalesIndex++);
 		saleList = shopSimulator.CACHE;
 		SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
 		Date firstBuy = null;
